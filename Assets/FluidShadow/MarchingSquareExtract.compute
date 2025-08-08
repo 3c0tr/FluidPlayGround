@@ -1,0 +1,37 @@
+#pragma kernel MarchingSquareExtract
+
+Texture2D<float4> InputTexture;
+RWStructuredBuffer<int> BoolOutput;
+int2 TargetSize;
+int2 InputSize;
+float threshold;
+
+// 安全采样函数：边界外返回0
+int SafeSample(int2 pos)
+{
+    // 检查是否在边界内（排除最外圈1层像素）
+    if (pos.x <= 0 || pos.x >= InputSize.x - 4 || pos.y <= 0 || pos.y >= InputSize.y - 4)
+        return 0;
+    
+    return InputTexture[pos].a > threshold ? 1 : 0;
+}
+
+[numthreads(8,8,1)]
+void MarchingSquareExtract (uint3 id : SV_DispatchThreadID)
+{
+    // 检查是否在有效范围内
+    if (id.x >= TargetSize.x || id.y >= TargetSize.y)
+        return;
+
+    int scale = 4;
+
+    int leftDown = SafeSample(int2(id.x * scale, id.y * scale));
+    int rightDown = SafeSample(int2(id.x * scale + scale, id.y * scale));
+    int rightUp = SafeSample(int2(id.x * scale + scale, id.y * scale + scale));
+    int leftUp = SafeSample(int2(id.x * scale, id.y * scale + scale));
+
+    int fin = leftDown + rightDown * 2 + rightUp * 4 + leftUp * 8;
+
+    int outputIndex = id.y * TargetSize.x + id.x;
+    BoolOutput[outputIndex] = fin;
+}

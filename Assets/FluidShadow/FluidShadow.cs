@@ -7,6 +7,7 @@ using System.Linq;
 
 public class FluidShadow : MonoBehaviour
 {
+    [SerializeField] private GameObject followObject;
     [SerializeField] private RenderTexture rt;
     [SerializeField] private ComputeShader cs;
     [SerializeField] private RenderTexture visualizeResult;
@@ -115,6 +116,7 @@ public class FluidShadow : MonoBehaviour
 
         if (!hasReq && simulation && lastTime >= 1.0f /  (float)frequency)
         {
+            this.transform.position = followObject.transform.position;
             req = Stage0(rt);
             hasReq = true;
         }

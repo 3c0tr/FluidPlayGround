@@ -9,6 +9,8 @@ this is a unity(2022.3.6) game demo about fluid simulation, was designed to demo
 - lighting:      |  lighting are available.
 - CastShadow:    |  the fluid can cast shadow.
 - GUNS:          |  you have a arsenal to use.
+
+(If you notice ring-shaped artifacts around light source, you can resolve this by increasing the 2D lighting texture resolution. You can find this option in the URP source code's RendererLighting.cs)
 ```
 <p align="center">
   <img src="./demo.gif" alt="preview">

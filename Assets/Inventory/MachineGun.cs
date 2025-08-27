@@ -67,7 +67,7 @@ public class MachineGun : MonoBehaviour
 
         float AftShooting01 = (FireRate / 60.0f) * Mathf.Max(AfterShooting, 0.0f);
 
-        //this.transform.localPosition = new Vector3(Mathf.Sin(Mathf.PI * 0.5f * AftShooting01) * -0.15f, 0, 0);
+        this.transform.localPosition = new Vector3(Mathf.Sin(Mathf.PI * 0.5f * AftShooting01) * -0.15f, 0, 0);
         this.transform.localRotation = Quaternion.Euler(0, 0, recoilValue);
         ReduceRecoil(10.0f * (1.0f - AftShooting01));
         float temp = AftShooting01 > 0.5f ? 2 * (1 - AftShooting01) : 2 * AftShooting01;
